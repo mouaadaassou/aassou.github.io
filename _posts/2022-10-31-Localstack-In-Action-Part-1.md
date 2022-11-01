@@ -1,3 +1,7 @@
+---
+layout: post
+title:  "Locastack In Action - Part 1"
+---
 # Localstack for Local Development:
 
 ## Introduction:
