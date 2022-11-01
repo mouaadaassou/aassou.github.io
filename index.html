@@ -1,0 +1,20 @@
+---
+layout: default
+title: Software Engineering Blog
+---
+<!--
+<link rel="stylesheet" type="text/css" href="styles.css"></link>
+<link rel="stylesheet" type="text/css" href="GitHub2.css"></link>
+-->
+
+
+<h2>All posts</h2>
+
+<ul>
+   {% for post in site.posts %}
+   <!-- #disqus_thread is used for displaying the comment count after each blog -->
+	<!-- do not display the comments info -->
+       <!-- <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> (<a href="{{site.baseurl}}{{ post.url }}#disqus_thread"></a>)</li> -->
+       <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time></li>
+   {% endfor %}
+</ul>
