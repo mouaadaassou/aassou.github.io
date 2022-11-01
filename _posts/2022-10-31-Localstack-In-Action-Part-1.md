@@ -1,5 +1,6 @@
 ---
 layout: post
+author: Moaad Aassou
 tags: [cloud, infrastructure]
 title:  "Locastack In Action - Part 1"
 ---
