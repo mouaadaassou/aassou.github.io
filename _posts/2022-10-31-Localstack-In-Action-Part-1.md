@@ -21,13 +21,13 @@ With LocalStack, you can run your AWS applications or Lambdas entirely on your l
 You can set up localstack in different ways - install its binary script that starts a docker container,
 and set all the infrastructure needed - or using Docker or docker-compose. for the full list of the available options [you can check this list](https://docs.localstack.cloud/get-started/)
 
-In our Lab we will use docker-compose to lunch localstack, you can use the [docker-compose associated with tha lab](./docker/docker-compose.yaml).
+In our Lab we will use docker-compose to lunch localstack, you can use the [docker-compose associated with tha lab](https://github.com/mouaadaassou/localstack-in-action/docker/docker-compose.yaml).
 I choose docker because I don't need to install any additional binary into my machine, I can lunch it and drop the container any time. 
 
 ### LocalStack with Docker and AWS CLI:
 You can use [the official docker-compose file from Localstack repo](https://github.com/localstack/localstack/blob/master/docker-compose.yml), you can remove the unnecessary ports - only required for Pro - as we are using the free localstack.
 
-The minimalistic docker-compose.yaml [can be found here](./docker/docker-compose.yaml), and in order to lunch the service, just execute the following command - I am running it in the background (-d parameter)
+The minimalistic docker-compose.yaml [can be found here](https://github.com/mouaadaassou/localstack-in-action/docker/docker-compose.yaml), and in order to lunch the service, just execute the following command - I am running it in the background (-d parameter)
 ```bash
 docker compose -f docker/docker-compose.yaml up -d
 ```
@@ -228,7 +228,7 @@ awsls s3 ls
 
 #### 4. Creating the Lambda fuction:
 The next step is to create a Lambda function that get triggered by the SQS - SQS as source for the lambda function, and saves the messages to a file on S3 bucket.
-for that, there already a simple [lambda function](./lambda.py) that get triggered whenever a new message is in the SQS.
+for that, there already a simple [lambda function](https://github.com/mouaadaassou/localstack-in-action/lambda.py) that get triggered whenever a new message is in the SQS.
 We need to zip the script and use it to create lambda function:
 ```bash
 # first step, zip the function handler:
@@ -335,7 +335,7 @@ awsls s3 --recursive ls s3://localstack-lab-bucket
 ```
 
 ## Testing AllTogether:
-You can use [this bash script](code/lunch-stack.sh) to lunch the whole stack along with the AWS resources, you can find all the previous commands there, with an easy-to-use script.
+You can use [this bash script](https://github.com/mouaadaassou/localstack-in-action/code/lunch-stack.sh) to lunch the whole stack along with the AWS resources, you can find all the previous commands there, with an easy-to-use script.
 
 ```bash
 ./code/./lunch-stack.sh
