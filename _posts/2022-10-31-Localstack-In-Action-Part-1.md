@@ -1,5 +1,6 @@
 ---
 layout: post
+tags: [cloud, infrastructure]
 title:  "Locastack In Action - Part 1"
 ---
 # Localstack for Local Development:
@@ -46,7 +47,7 @@ you can check this section on lambda execution mode from [the official documenta
 In This Lab, We will create an SNS that has an SQS subscribed to it, and a Lambda that starts listens on that SQS, and then process the message and upload it to an S3. 
 the lab will use AWS CLI to provision the infrastructure as a first option.
 
-![SNS-SQS-Lambda-S3-Scenario](https://github.com/mouaadaassou/localstack-in-action/blob/main/img/scenario.png)
+![SNS-SQS-Lambda-S3-Scenario](../imgages/scenario.png)
 
 
 #### Setting Up the AWS Configuration for Localstack:
