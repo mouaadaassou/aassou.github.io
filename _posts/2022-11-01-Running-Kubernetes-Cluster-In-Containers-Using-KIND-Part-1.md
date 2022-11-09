@@ -1,13 +1,14 @@
 # Running Kubernetes Cluster In Docker Containers Using KIND - Part 1
-Many Companies are using containers to run their application in production, defining boundaries between applications, and enabling the control on app level - you can control
-the CPU and memory amount to give for each container. but running container in production requires some level of coordination - or speaking technically, we need an orchestrator that control and manage your containers,
-for example restarting an unhealthy container, scale the number of the instances based on the instance's resource consumption - CPU, RAM, ...
+Many Companies are using containers to run their applications in production, duo to its capabilities to ship and run applications in a portable and a secure way - thanks of Linux Control-Group and namespaces -
+especially in the era of the microservices architecture, where you divide your big-monolith application into multiple applications, each does one thing, and it does it well.
+but running containers in production requires some level of coordination - or technically speaking, we need an orchestrator that automate and manage the lifecycle management of containers. 
+example restarting an unhealthy container, scale the number of the instances based on the instance's resource consumption - CPU, RAM, ...
 
-Kubernetes is the de-facto Container Orchestration Platform - there is also Docker Swarm from the Docker Inc, Mesos, which is - designed for the enterprise, 
-it can run different workloads - stateless apps, stateful apps, cron-jobs, jobs, and much more...
+Kubernetes is the de-facto Container Orchestration Platform designed for the enterprise, it can run different workloads - stateless apps, stateful apps, cron-jobs, jobs, and much more...
+note that there are other options like Docker Swarm from the Docker Inc, Mesos, ...
 
 In This Lab, we will use KIND to install and run Kubernetes using Docker Containers - This is why we call it KIND, Kubernetes In Docker.
-I choose Kind, because it is a lightweight tool, unlike minikube which requires installing a hypervisor - VirtualBox, or VMWare - and then launching
+I choose Kind, because it is a lightweight tool, unlike minikube which requires installing a hypervisor like VirtualBox, or VMWare, and then launching
 a single node cluster inside a VM, and also it does not support multi-node cluster.
 > kind is a tool for running local Kubernetes clusters using Docker container “nodes”.
 kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI - Official Documentation
@@ -17,13 +18,13 @@ kind was primarily designed for testing Kubernetes itself, but may be used for l
 * go - you can download it from [here](https://go.dev/dl/)
 
 ## Installing Kind:
-Once you have installed the pre-requisites, you can now use the go binary to download and install kind as follow:
+Once you have installed the pre-requisites, you can now use the go binary to download and install kind as follows:
 
 ```bash
 go install sigs.k8s.io/kind@v0.17.0
 ```
 
-After installing kind CLI, we can try to create a cluster, and name it kind-cluster by passing --name argument - use the following command:
+After installing kind CLI, we can try to create a cluster, we will name it kind-cluster by passing --name argument - use the following command:
 ```bash
 kind create cluster --name kind-cluster
 ```
