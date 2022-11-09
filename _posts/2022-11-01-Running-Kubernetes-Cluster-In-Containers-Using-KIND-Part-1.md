@@ -1,34 +1,47 @@
 # Running Kubernetes Cluster In Docker Containers Using KIND - Part 1
-Many Companies are using containers to run their applications in production, duo to its capabilities to ship and run applications in a portable and a secure way - thanks of Linux Control-Group and namespaces -
-especially in the era of the microservices architecture, where you divide your big-monolith application into multiple applications, each does one thing, and it does it well.
-but running containers in production requires some level of coordination - or technically speaking, we need an orchestrator that automate and manage the lifecycle management of containers. 
-example restarting an unhealthy container, scale the number of the instances based on the instance's resource consumption - CPU, RAM, ...
 
-Kubernetes is the de-facto Container Orchestration Platform designed for the enterprise, it can run different workloads - stateless apps, stateful apps, cron-jobs, jobs, and much more...
-note that there are other options like Docker Swarm from the Docker Inc, Mesos, ...
+Many Companies are using containers to run their applications in production, due to its capabilities to ship and run applications in a portable and a secure way, thanks for Linux Control-Group and namespaces.
+Especially in the era of the microservices architecture, where you divide your big-monolith application into multiple applications, each application does one thing, and does it well.
 
-In This Lab, we will use KIND to install and run Kubernetes using Docker Containers - This is why we call it KIND, Kubernetes In Docker.
-I choose Kind, because it is a lightweight tool, unlike minikube which requires installing a hypervisor like VirtualBox, or VMWare, and then launching
-a single node cluster inside a VM, and also it does not support multi-node cluster.
+But running containers in production requires some level of coordination, technically speaking, we need an orchestrator that automates and manages the lifecycle management of containers, like restarting an unhealthy container, scale the number of the instances based on the instance resource consumption (CPU usage, RAM consumption and so on and so forth).
+
+Kubernetes is the de-facto Container Orchestration Platform designed for the enterprise, it can run different workloads, like stateless and/or stateful application, cron-jobs, jobs, and list goes on.
+
+Kubernetes is a great orchestration tool, but it's really hard to install on your local machine, since it needs a lot of tools and software pieces.
+
+There are many alternatives to install Kubernetes on your local machine like Minikube, KIND, K3s/K3d and Rancher.
+
+Based on my own experience, Kind - which stands for Kubernetes In Docker - is the easiest way to run Kubernetes on your local machine.
+
+Unlike Minikube, which requires installing a hypervisor like VirtualBox, or VMWare, and then launching
+a single node cluster inside a VM, Kind is easy to use and uses Docker containers to work smoothly.
+
+Minikube also doesn't support multi-node cluster, Kind does.
+
+For that reason, we will use KIND in this lab to install and run Kubernetes using Docker Containers.
+
 > kind is a tool for running local Kubernetes clusters using Docker container “nodes”.
 kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI - Official Documentation
 
-### Pre-Requisites:
-* Docker 
-* go - you can download it from [here](https://go.dev/dl/)
+### Prerequisites:
+* Docker
+* golang - you can download it from [here](https://go.dev/dl/)
 
 ## Installing Kind:
-Once you have installed the pre-requisites, you can now use the go binary to download and install kind as follows:
+Once you have installed the prerequisites, you can now use the <b>golang</b> binary to download and install kind as follows:
 
 ```bash
 go install sigs.k8s.io/kind@v0.17.0
 ```
 
-After installing kind CLI, we can try to create a cluster, we will name it kind-cluster by passing --name argument - use the following command:
+After installing <b>Kind CLI</b>, we can try to create a cluster, we will name it <i>Kind-cluster</i> by passing <b>--name</b> argument, use the following command:
+
 ```bash
 kind create cluster --name kind-cluster
 ```
-below command output:
+
+The output should be similar to:
+
 ```bash
 Creating cluster "kind-cluster" ...
  ✓ Ensuring node image (kindest/node:v1.25.3) 🖼
@@ -44,28 +57,18 @@ kubectl cluster-info --context kind-kind-cluster
 
 Have a nice day! 👋
 ```
-Now, we have created a cluster with a single node - single docker container. This container will host all the kubernetes components - control plane, scheduler, ...
-kind uses Kubeadm to boot each container node - [kubeadm](https://github.com/kubernetes/kubeadm) is a tool built to provide best-practice "fast paths" for creating Kubernetes clusters.
-
-You can see the cluster nodes using docker CLI:
-```bash
-docker container ls
-```
-the output will show that, you have one container running, which is your single node:
-```bash
-CONTAINER ID   IMAGE                  COMMAND                  CREATED         STATUS         PORTS                       NAMES
-cf0c5d092282   kindest/node:v1.25.3   "/usr/local/bin/entr…"   2 minutes ago   Up 2 minutes   127.0.0.1:54180->6443/tcp   kind-cluster-control-plane
-```
+Now, we have created a cluster with a single node (Docker container). This node will host all the Kubernetes components like control plane, scheduler, etcd and API Server.
 
 ### Interacting with your Cluster:
-To interact with your cluster, you need to have kubectl, for communicating with a Kubernetes cluster's control plane, using the Kubernetes API.
-you can install kubectl using this [link](https://kubernetes.io/docs/tasks/tools/).
+To interact with your cluster, you need to have kubectl.Internally, kubectl communicates with the cluster control plane through Kubernetes API.
 
-Once installed, we can try to list all pods in our cluster -- in all namespaces:
+You can install kubectl using this [link](https://kubernetes.io/docs/tasks/tools/).
+
+Once installed, we can try to list all pods in all namespaces within our cluster:
 ```bash
 kubectl get pods --all-namespaces
 ```
-the single cluster containers many pods - these pods are called system pods
+As you can see below, the cluster contains many system pods:
 ```bash
 NAMESPACE            NAME                                                 READY   STATUS    RESTARTS   AGE
 kube-system          coredns-565d847f94-4bb7h                             1/1     Running   0          16m
@@ -78,26 +81,29 @@ kube-system          kube-proxy-9nk6l                                     1/1   
 kube-system          kube-scheduler-kind-cluster-control-plane            1/1     Running   0          16m
 local-path-storage   local-path-provisioner-684f458cdd-jdc7l              1/1     Running   0          16m
 ```
-as you can see from the output, all these pods - except pods local-path-provisioner-684f458cdd-jdc7l - are control plane's components.
-> The control plane's components make global decisions about the cluster (for example, scheduling), as well as detecting and responding 
-to cluster events (for example, starting up a new pod when a deployment's replicas field is unsatisfied).
+As you can see from the output, all these pods except pods local-path-provisioner-684f458cdd-jdc7l are control plane components.
 
-let's delete the cluster to move to the next part of the lab
+> The control plane components make global decisions about the cluster (for example, scheduling), as well as detecting and responding to cluster events (for example, starting up a new pod when a deployment replicas field is unsatisfied).
+
+Now, let's delete the single node cluster to move to the next part of the lab
 ```bash
 kind delete clusters kind-cluster
 ```
 
-Until now, we have created a single cluster. but usually to simulate production, we need to have a cluster with multiple nodes, not only one node.
-for that, kind enable us to control the cluster configuration via a yaml file to configure the cluster.
-The configuration yaml file, follows the K8s conventions. an example of configuring kind cluster is as follows:
+Until now, we have created a single cluster, but usually to simulate production, we need to have a cluster with multiple nodes, not only one node.
+For that, KIND enables us to control the cluster configuration via a YAML file to configure the cluster's nodes.
+
+The YAML file configuration, follows the K8s conventions. an example of configuring kind cluster is as follows:
 ```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: kind-cluster
 ```
-here we are creating a cluster with name `kind-cluster` - its equivalent for the previous command where we create our first kind cluster.
 
-Now, we will try to create a cluster with 5 instances - 2 as control plane, and 3 nodes as worker nodes. we can do that by adding `nodes` object to the configuration YAML file,
+Here we are creating a cluster with `kind-cluster` as name.
+
+Now, we will try to create a cluster with 5 nodes, 2 nodes as control plane and 3 nodes as worker nodes.
+We can do that by adding `nodes` object to the YAML configuration file,
 
 ```yaml
 kind: Cluster
@@ -111,9 +117,9 @@ nodes:
 - role: worker
 ```
 
-after defining the nodes, we can apply this configuration while creating the cluster using the following command:
+After defining the nodes, we can apply this configuration while creating the cluster using the following command:
 ```bash
-kind create cluster --config multi-node-cluster.yaml
+kind create cluster --config multi-node-cluster.YAML
 
 Creating cluster "kind-cluster" ...
  ✓ Ensuring node image (kindest/node:v1.25.3) 🖼
@@ -133,7 +139,7 @@ kubectl cluster-info --context kind-kind-cluster
 Thanks for using kind! 😊
 ```
 
-let's try to list the cluster node using kubectl:
+Let's try to list the cluster nodes using kubectl:
 ```bash
 kubectl get nodes
 
@@ -146,5 +152,8 @@ kind-cluster-worker3          Ready    <none>          67s     v1.25.3
 ```
 As you can see from the output, we have now 5 nodes with 2 as control-plan and 3 as worker nodes.
 
-As you can conclude, Kind is a very powerful tool that, enables you running kubernetes locally, and support multi-node topology.
-In the next Lab, we will try to deploy some applications using k8s resources - deployment, service, LB, ... - and then exposing them to the outside - outside the cluster.
+Now you have a ready to use cluster on which you can deploy your applications.
+
+We can conclude that Kind is a very powerful tool, that enables us to run kubernetes locally either in single node mode or multi-node mode.
+
+In the next Lab, we will try to use the multi-node cluster by deploying some applications using k8s resources like deployment, service and configMap.
