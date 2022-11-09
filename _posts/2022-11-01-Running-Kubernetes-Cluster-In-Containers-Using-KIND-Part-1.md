@@ -7,7 +7,7 @@ title:  "Multi-Node Cluster with Kind"
 
 # Running Kubernetes Cluster In Docker Containers Using KIND - Part 1
 
-![KIND](../images/kind-logo.png)
+![KIND](/images/kind-logo.png)
 
 Many Companies are using containers to run their applications in production, due to its capabilities to ship and run applications in a portable and a secure way, thanks for Linux Control-Group and namespaces.
 Especially in the era of the microservices architecture, where you divide your big-monolith application into multiple applications, each application does one thing, and does it well.
