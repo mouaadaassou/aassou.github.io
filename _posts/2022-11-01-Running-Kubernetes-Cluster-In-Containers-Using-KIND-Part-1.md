@@ -1,11 +1,10 @@
 ---
 layout: post
 author: Moaad Aassou
-tags: [cloud, infrastructure]
-title:  "Multi-Node Cluster with Kind"
+tags: [kubernetes, infrastructure]
+title:  "Building Multi-Node Kubernetes Cluster locally with Kind"
 ---
 
-# Running Kubernetes Cluster In Docker Containers Using KIND - Part 1
 
 ![KIND](/images/kind-logo.png)
 
